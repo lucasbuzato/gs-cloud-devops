@@ -2,7 +2,9 @@ version: "3.9"
 
 services:
   web:
-    build: .
+    build:
+      context: ..
+      dockerfile: ops/Dockerfile
     ports:
       - "8080:80"
     depends_on:
@@ -12,9 +14,12 @@ services:
     image: mysql:8
     environment:
       MYSQL_ROOT_PASSWORD: senha123
-      MYSQL_DATABASE=gs_ai
+      MYSQL_DATABASE: gs_ai
     volumes:
       - dbdata:/var/lib/mysql
+      - ../db:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "3306:3306"
 
 volumes:
   dbdata:
